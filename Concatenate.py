@@ -2,6 +2,7 @@ OVERLAP_LENGTH = 5
 
 while True:
     fragments = [] #initialise fragments as a list
+    existing_fragments = []  # Track existing fragments for uniqueness
 
     # To collect 10 nucleotide base pair fragments from user as a input (prototyping)
     print("Enter 10 nucleotide base pair fragments (500 bases each): ")
@@ -14,22 +15,27 @@ while True:
                 # Validate fragment length and content
                 if len(fragment) != 500:
                     raise ValueError("Fragment length is not 500 bases.")
+
+                # Validate fragment content
                 if not all(n in "ATGC" for n in fragment):
                     raise ValueError("Fragment contains invalid characters.")
+
+                # Check for uniqueness
                 if fragment in existing_fragments:
                     raise ValueError("Fragment is a duplicate.")
+
+                # Check if the Fragment is contained within another fragment
                 if any(fragment in f for f in existing_fragments):
                     raise ValueError("Fragment is contained within another fragment.")
-                
+
+                # Add valid fragment to the list
                 fragments.append(fragment)  # Add valid fragment to the list
                 break  # Break the loop if user input is valid
+
             
             #Error Handling
             except ValueError as ve:
                 print("Error with fragment input: " + str(ve) + ". Please ensure the fragment is exactly 500 bases long and contains only 'A', 'T', 'G', and 'C'.")
-                print(" ")
-            except TypeError as te:
-                print("Type error with fragment input: " + str(te) + ". This might occur if the input type is not as expected.")
                 print(" ")
             except Exception as err:
                 print("An unexpected error occurred while collecting fragment " + str(i + 1) + ": " + str(err))
@@ -69,8 +75,6 @@ while True:
                 break
 
     #Error handling
-    except TypeError as te:
-        print("Type error during sequence assembly: " + str(te) + ". This might happen if a non-string type is used in string operations.")
     except Exception as err:
         print("An unexpected error occurred during sequence assembly: " + str(err))
 
