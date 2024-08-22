@@ -90,7 +90,6 @@ while True:
 
 
 
-
     # Prompt user to overlap another batch of fragments or exit
     while True:
         try:
@@ -107,6 +106,8 @@ while True:
                 print("Invalid input! Please enter 1 for Yes or 0 for No")
 
         #Error Handling
+        except ValueError as ve:
+            print("Invalid input: " + str(ve) + ". Please enter a number.")
         except Exception as err:
             print("An error has occurred while processing user choice: " + str(err))
 
