@@ -16,10 +16,13 @@ while True:
                     raise ValueError("Fragment length is not 500 bases.")
                 if not all(n in "ATGC" for n in fragment):
                     raise ValueError("Fragment contains invalid characters.")
-                
+                if fragment in existing_fragments:
+                    raise ValueError("Fragment is a duplicate.")
+                if any(fragment in f for f in existing_fragments):
+                    raise ValueError("Fragment is contained within another fragment.")
                 
                 fragments.append(fragment)  # Add valid fragment to the list
-                break  # Break the loop if input is valid
+                break  # Break the loop if user input is valid
             
             #Error Handling
             except ValueError as ve:
@@ -34,13 +37,11 @@ while True:
 
 
 
-
     # To initialise the complete sequence with our first fragment
     complete_sequence = fragments[0]  #Initializes the complete sequence with the first fragment (0 index = 1)
     used_fragments = [False] * len(fragments)  # Creates a list to track which fragments have been used, initialized as "False".
     used_fragments[0] = True # Marks the first fragment as used in the sequence.
     
-
 
 
     # For assemblng the sequence:
@@ -75,7 +76,6 @@ while True:
 
 
 
-
     # Result output
     if all(used_fragments):
         print("Complete sequence constructed: ")
@@ -87,7 +87,6 @@ while True:
     else:
         print("Not all fragments could be used to construct a complete sequence!!")
         print(" ")
-
 
 
     # Prompt user to overlap another batch of fragments or exit
